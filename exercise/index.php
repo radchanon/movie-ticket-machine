@@ -66,7 +66,7 @@
                 echo "<div class='caption'><h3>".$result['name']."</h3>";
               }
               echo "<p>ราคา: ".$result['price']." บาท</p>";
-              echo "<p align='center'><a href='detial.php?id=".$result['id']."' class='btn btn-primary btn-block'>รายละเอีด</a></p></div></div></div>";
+              echo "<p align='center'><a href='detail.php?id=".$result['id']."' class='btn btn-primary btn-block'>รายละเอีด</a></p></div></div></div>";
             }
         ?>
         </ul>
