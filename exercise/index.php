@@ -9,26 +9,13 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <style type="text/css">
-  img.img-resize img {
-    height: 150px;
-    width: auto;
-  }
-
-  img.img-resize {
-    width: 300px;
-    height: 400px;
-    overflow: hidden;
-    text-align: center;
-  }
-
-  .jumbotron {
-      background-image: url("bg/bg.jpg");
-      color: #ff6600;
-      padding: 150px 25px;
-      background-attachment: fixed;
-      font-family: Montserrat, sans-serif;
-      box-shadow: 0px 5px 10px 10px rgba(50,50,50,.4) inset;
-      
+   .jumbotron {
+    background-image: url("bg/bg.jpg");
+    color: #ff6600;
+    padding: 150px 25px;
+    background-attachment: fixed;
+    font-family: Montserrat, sans-serif;
+    box-shadow: 0px 5px 10px 10px rgba(50,50,50,.4) inset;     
   }
 </style>
 </head>
@@ -60,7 +47,7 @@
             foreach($DATA['data'] as $result) {
               //echo $result['id']."<br>";
               echo "<div class='col-md-4'><div class='thumbnail'>";
-              echo "<img src='".$result['image']."'class='img-resize'>";
+              echo "<a href='detail.php?id=".$result['id']."'><img  src='".$result['image']."'style='height:450px;'></a>";
               if(strlen($result['name'])> 25){
                 echo "<div class='caption'><h3>".substr_replace($result['name'],'...',25)."</h3>";
               }else{
