@@ -21,8 +21,6 @@ $curl = curl_init();
                 $des = $result['shot_description'];
                 $price = $result['price'];
                 $status = $result['now_showing'];
-              }else{
-                
               }
             }
             
@@ -80,6 +78,8 @@ $curl = curl_init();
       </div>
   </div>
 </div>
+
+
 </body>
 </html>
 
