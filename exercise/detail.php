@@ -1,4 +1,3 @@
-
 <?php 
 if(empty($_GET)){
   header("Location:index.php");
@@ -16,16 +15,21 @@ $curl = curl_init();
             curl_close($curl);
 
             $DATA= json_decode($resp, true);
+            //echo count($DATA['data']);
             foreach($DATA['data'] as $result) {
               if($result['id'] == $id){
                 $name = $result['name'];
                 $img = $result['image'];
                 $des = $result['shot_description'];
                 $price = $result['price'];
-                $status = $result['now_showing'];
+                $status = $result['now_showing']; 
+                break;
               }
             }
-            
+            if(empty($name)){
+              header("Location:index.php");
+            }
+                        
 ?>
 <!DOCTYPE html>
 <html>
@@ -36,7 +40,6 @@ $curl = curl_init();
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
 </head>
 <body>
 <div class="container">
