@@ -1,7 +1,9 @@
-<!--Develop brach -->
-<?php 
-$id = $_GET['id'];
 
+<?php 
+if(empty($_GET)){
+  header("Location:index.php");
+}
+$id = $_GET['id'];
 $curl = curl_init();
             // Set some options - we are passing in a useragent too here
             curl_setopt_array($curl, array(
