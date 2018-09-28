@@ -59,7 +59,7 @@
             foreach($DATA['data'] as $result) {
               //echo $result['id']."<br>";
               echo "<div class='col-md-4'><div class='thumbnail'>";
-              echo "<img src='".$result['image']."'class='img-resize'/>";
+              echo "<img src='".$result['image']."'class='img-resize'>";
               if(strlen($result['name'])> 25){
                 echo "<div class='caption'><h3>".substr_replace($result['name'],'...',25)."</h3>";
               }else{
