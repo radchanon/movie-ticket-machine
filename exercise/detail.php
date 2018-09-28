@@ -1,4 +1,4 @@
-<!-- ***อยู่ระหว่างการปรับปรุงให้พร้องการส่งงาน*** -->
+<!--Develop brach -->
 <?php 
 $id = $_GET['id'];
 
@@ -21,6 +21,8 @@ $curl = curl_init();
                 $des = $result['shot_description'];
                 $price = $result['price'];
                 $status = $result['now_showing'];
+              }else{
+                
               }
             }
             
@@ -34,37 +36,50 @@ $curl = curl_init();
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </head>
 <body>
 <div class="container">
   <h1 class="my-4">รายละเอียดภาพยนต์</h1>
   <div class="row well">
     
-    <div class="col-md-8">
-      <img class="img-fluid" src="<?php echo $img; ?>" alt="">
+    <div class="col-md-6">
+      <img class="img-fluid" src="<?php echo $img; ?>" style="widht:auto;height:680px;">
     </div>
 
-    <div class="col-md-4">
-      <h3 class="my-3"><?php echo $name; ?> </h3>
-      <p>เรื่องย่อ: <?php echo $des; ?></p>
-      <p>ราคา: <?php echo $price; ?> </p>
-      <p>สถานะ: 
-        <?php
-          if($status == true){
-            echo "กำลังฉายในขณะนี้";
-          }else{
-            echo "หมดเวลาเข้าฉาย";
-          } 
-        ?> 
-      </p>
-    </div>
-
+      <div class="col-md-6">
+        <h2><?php echo $name; ?></h2>
+        <hr>
+        <div class="row">
+          <!-- Description -->
+          <div class="col-md-2"><h4>เรื่องย่อ: </h4></div>
+          <div class="col-md-10"><h4><?php echo $des; ?></h4></div> 
+          <!-- Price --> 
+          <div class="col-md-2"><h4>ราคา: </h4></div>
+          <div class="col-md-10"><h4><?php echo $price." บาท"; ?></h4></div>
+          <!-- Status -->
+          <div class="col-md-2"><h4>สถานะ: </h4></div>
+          <div class="col-md-10">
+            <h4>
+              <?php
+                if($status == true){
+                  echo "<h4 style='color:green;'>กำลังฉายในขณะนี้</h4>";
+                }else{
+                  echo "<h4 style='color:red;'>หมดเวลาเข้าฉาย</h4>";
+                } 
+              ?>
+            </h4>
+          </div>
+        </div>
+        <hr>
+          <div class="col-md-0 " alight="center">
+            <a href="index.php" class="btn btn-primary" role="button">
+              <span class="glyphicon glyphicon-home"> กลับสู่หน้าหลัก
+            </a> 
+          </div> 
+      </div>
+  </div>
 </div>
-
-    <div class="col-md-offset-11 " alight="center"><a href="index.php" class="btn btn-primary" role="button">กลับสู่หน้าหลัก</a> </div>
-
-
 </body>
 </html>
 
-<!-- อยู่ระหว่างการปรับปรุงให้พร้องการส่งงาน -->
