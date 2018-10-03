@@ -36,12 +36,14 @@ $curl = curl_init();
 <title>MovieTicketMachine</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<!-- BS 4
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -78,68 +80,63 @@ $curl = curl_init();
         </div>
         <hr>
           <div class="col-md-0 " alight="center">
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal" <?php if($status == false){?> disabled <?php  } ?>>ซื้อตั๋วชมภาพยนต์</button>
             <a href="index.php" class="btn btn-primary" role="button">
               <span class="glyphicon glyphicon-home"> กลับสู่หน้าหลัก
             </a> 
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">ซื้อตั๋วชมภาพยนต์</button>
           </div> 
       </div>
   </div>
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <input type='text'> 
+          <div class="container-fluid">
+            <div class="row form-group">
+              <div class="col-md-4">จำนวนที่นั่ง:</div>
+              <div class="col-md-8">
+                <input type="text" class="form-control" id="chair" value="" onkeyup="cal();">
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-md-4">ราคา:</div>
+              <div class="col-md-8">
+                <input type="text" class="form-control" id="price" value="" readonly>
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-md-4">จำนวนเงืนที่ใส่:</div>
+              <div class="col-md-8">
+                <input type="text" class="form-control" id="money" value="">
+              </div>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+          <button type="button" class="btn btn-primary" onclick='buy();'>ซื้อตั๋ว</button>
+          <!--a href="buy.php?id=" class="btn btn-primary" role="button"> ซื้อตั๋ว </a-->
         </div>
       </div>
     </div>
   </div>
-  <!-- Modal -->
-  <h2>Centered Modal Example</h2>
-  <p>Center the modal vertically and horizontally within the page, with the .modal-dialog-centered class.</p>
-  <!-- Button to Open the Modal -->
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-    Open modal
-  </button>
-
-  <!-- The Modal -->
-  <div class="modal fade" id="myModal">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-      
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Modal Heading</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        
-        <!-- Modal body -->
-        <div class="modal-body">
-          <input type='text'>
-        </div>
-        
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-
-
+<script type="text/javascript"> 
+function cal(){
+  var chair = document.getElementById('chair').value;
+  //alert();
+  document.getElementById('price').value =<?php echo $price; ?>*chair;
+}
+function buy(){
+  window.location = "buy.php?id=<?php echo $id ?>?chair="+document.getElementById('chair').value;
+}
+</script> 
 </body>
 </html>
+
 
