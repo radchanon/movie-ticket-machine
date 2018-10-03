@@ -158,9 +158,9 @@ function cal(){
 }
 function buy(){
   //window.location = "buy.php?id=<.?php echo $id ?>?chair="+document.getElementById('chair').value;
-  var chair = document.getElementById('chair').value;//จำนวนที่นั่ง  
-  var price = document.getElementById('price').value;//จำนวนที่ต้องจ่าย
-  var money = document.getElementById('money').value;//จำนวนเงินที่ใสตู้
+  var chair = parseInt(document.getElementById('chair').value);//จำนวนที่นั่ง  
+  var price = parseInt(document.getElementById('price').value);//จำนวนที่ต้องจ่าย
+  var money = parseInt(document.getElementById('money').value);//จำนวนเงินที่ใสตู้
   var thousand = 0;
   var fhundred  = 0;
   var ohundred = 0;
@@ -171,8 +171,10 @@ function buy(){
   var two = 0;
   var one = 0;
   if(money >= price){
+    
     var change = money - price;
     var a = change;
+    //alert("เข้าโปรแกรมถอน\nต้องจ่าย"+ typeof price + "\nจ่ายจริง "+typeof money +"\nต้องถอน "+ typeof change);
     if(change >= 1000){
       thousand = change / 1000;
       thousand = Math.floor(thousand);
@@ -219,7 +221,7 @@ function buy(){
     alert("ต้องถอน:"+ a +" เป็น\n" +"แบงค์พัน:"+ thousand +"\n" + "แบงค์ห้าร้อย:"+ fhundred +"\n" + "แบงค์ร้อย:"+ ohundred +"\n" + "แบงค์ห้าสิบ:"+ fifty +"\n" + "แบงค์ยี่สิบ:"+ twenty +"\n" 
       +"เหรียญสิบ:"+ ten +"\n" + "เหรียญห้า:"+ five +"\n" + "เหรียญสองบาท:"+ two +"\n" + "เหรียญบาท:"+ one) ;  
   }else{
-    alert("กรุณาใส่จำนวนเงินให้ถูกต้อง\nต้องจ่าย "+ price +"\nจ่ายจริง "+money);    
+    alert("กรุณาใส่จำนวนเงินให้ถูกต้อง");    
   }
 }
 
