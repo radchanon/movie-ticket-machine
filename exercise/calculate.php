@@ -2,20 +2,12 @@
 if(empty($_GET)){
     header("Location:index.php");
 }
-/*echo ($_GET['chair']." ".$_GET['price']." ".$_GET['money']);
-if ($_GET['chair'] == 'NaN') {
-    echo ("chair = NaN");
-}*/
-//echo (gettype($chair)." ".gettype($price)." ".gettype($money));
-//////////////////////////////////////
-if ( $_GET['chair'] != 'NaN' || $_GET['price'] != 'NaN' || $_GET['money'] != 'NaN' ) {
+        $chair = intval($_GET['chair']);//จำนวนตั๋ว
+        $price = intval($_GET['price']);//จำนวนที่ต้องจ่าย
+        $money = intval($_GET['money']);//จำนวนที่จจ่ายจริง
 
-    $chair = intval($_GET['chair']);//จำนวนตั๋ว
-    $price = intval($_GET['price']);//จำนวนที่ต้องจ่าย
-    $money = intval($_GET['money']);//จำนวนที่จจ่ายจริง
-    if($money >= $price){
         $change = $money - $price;
-        echo ("จำนวน: ". $chair ." ที่นั่ง<br>ราคาสุทธิ: ".$price." บาท<br>จำนวนเงินที่ใส่ตู้: ".$money." บาท<br>เงินทอนสุทธิ: " . $change."<br>");
+        echo ("จำนวนตั๋วที่ซื้อ: ". $chair ." ที่นั่ง<br>ราคาสุทธิ: ".$price." บาท<br>จำนวนเงินที่ใส่ตู้: ".$money." บาท<br>เงินทอนสุทธิ: " . $change." บาท<br>เป็น<br>");
         if($change >= 1000){
             echo ("แบงค์พัน ".floor($change / 1000)." ใบ<br>");
             $change = $change % 1000;
@@ -51,10 +43,4 @@ if ( $_GET['chair'] != 'NaN' || $_GET['price'] != 'NaN' || $_GET['money'] != 'Na
         if($change >= 1){
             echo ("เหรียญบาท ".($change / 1)." เหรียญ<br>");
         }
-    }else{
-        echo ("กรุณาใส่จำนวนเงินให้ถูกต้อง");
-    }
-}else{
-    echo ("กรุณากรอกข้อมูลให้ครบถ้วน");
-}
 ?>

@@ -41,7 +41,7 @@ $curl = curl_init();
 </head>
 <body>
 <div class="container">
-  <h1 class="my-4">รายละเอียดภาพยนต์</h1>
+  <h1 class="my-4">รายละเอียดภาพยนตร์</h1>
   <div class="row well">
     
     <div class="col-md-6">
@@ -61,7 +61,6 @@ $curl = curl_init();
           <!-- Status -->
           <div class="col-md-2"><h4>สถานะ: </h4></div>
           <div class="col-md-10">
-            <h4>
               <?php
                 if($status == true){
                   echo "<h4 style='color:green;'>กำลังฉายในขณะนี้</h4>";
@@ -69,36 +68,40 @@ $curl = curl_init();
                   echo "<h4 style='color:red;'>หมดเวลาเข้าฉาย</h4>";
                 } 
               ?>
-            </h4>
           </div>
         </div>
         <hr>
           <!-- Stsrt Ticket Box -->
           <div class="container-fluid" id='ticketBox' style='display:none;'>
             <div class="row form-group">
-              <div class="col-md-4">จำนวนที่นั่ง:</div>
+              <div class="col-md-4">จำนวนตั๋ว:</div>
               <div class="col-md-8">
-                <input type="text" class="form-control" id="chair" value="" onkeyup="cal();" >
+                <input type="text" placeholder="กรอกตัวเลข 0-9 เท่านั้น" class="form-control" id="chair" value="" autofocus>
               </div>
             </div>
             <div class="row form-group">
-              <div class="col-md-4">ราคา:</div>
+              <div class="col-md-4">ราคาสุทธิ:</div>
               <div class="col-md-8"><input type="text" class="form-control" id="price" value="" readonly></div>
             </div>
             <div class="row form-group">
-              <div class="col-md-4">จำนวนเงืนที่ใส่:</div>
-              <div class="col-md-8"><input type="text" class="form-control" id="money" value="" ></div>
+              <div class="col-md-4">จำนวนเงินที่ใส่ตู้:</div>
+              <div class="col-md-8">
+                <input type="text" placeholder="กรอกตัวเลข 0-9 เท่านั้น" class="form-control" id="money" value="" disabled>
+                <p id="alert" style="color:red"></p>
+              </div>
             </div>
             <div class="row form-group">
-                <button type="button" class="btn btn-primary col-md-offset-10 col-md-2" id="buy">ซื้อตั๋ว</button>            
-            </div>             
+              <button type="button" class="btn btn-primary col-md-offset-10 col-md-2" id="buy" disabled>ซื้อตั๋ว</button>          
+            </div>
+            <hr>             
           </div>
           <!-- End Ticket Box -->          
-          <hr>
+          <!-- Button group --> 
           <div class="col-md-0 " alight="center">  
             <button type="button" class="btn btn-info" id="toggle" <?php if($status == false){?> disabled <?php  } ?> >ซื้อตั๋วชมภาพยนต์</button>
             <a href="index.php" class="btn btn-primary" role="button"> กลับสู่หน้าหลัก </a> 
-          </div> 
+          </div>
+                
       </div>
   </div>
   <!-- Modal -->
@@ -106,13 +109,14 @@ $curl = curl_init();
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">ภาพยนต์เรื่อง: <?php echo $name ?></h4>
+          <h4 class="modal-title">ภาพยนตร์เรื่อง: <?php echo $name ?></h4>
         </div>
         <div class="modal-body" >
-          <p></p>
+          <p id="data"></p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id='finish'>ตกลง</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
         </div>
       </div>
     </div>
@@ -120,35 +124,70 @@ $curl = curl_init();
   <!-- End Modal -->
   <script>
     //start jQuery
-    $(document).ready(function(){
-        //ใส่จำนวนตั๋ว แล้วสรุปจำนวนที่ต้องจ่าย
-        $('#chair').keyup(function(){
-            var chair = parseInt($('#chair').val());
-            $('#price').val(chair * <?php echo $price ?>);
-        });
-        //เปิด-ปิด ช่องซื้อตั๋ว
+    $(document).ready(function(){ 
+        ///////////////////////////////////////////////เปิด-ปิด ช่องซื้อตั๋ว///////////////////////////////////////
         $('#toggle').click(function(){
             $('#ticketBox').toggle(600);
         });
-        //start คำนวณเงินทอน
-        $('#buy').click(function(){
-            
-            var chair = parseInt($('#chair').val());
-            var price = parseInt($('#price').val());
-            var money = parseInt($('#money').val());            
-            $.ajax({
-                type:'GET',
-                url:'calculate.php',
-                data:{chair:chair,
-                      price:price,
-                      money:money},
-                success: function(data){
-                  //alert(data);
-                  $('p').html(data);
-                  $('#modalbox').modal('show');
-                }
-            });//end AJAX
-        });//end คำนวณงินทอน        
+        ///////////////////////////////////////////////กำหนดให้ใส่เฉพาะตัวเลข///////////////////////////////////////
+        //ref link: https://stackoverflow.com/questions/995183/how-to-allow-only-numeric-0-9-in-html-inputbox-using-jquery 
+        //ไม่ป้องกันการก็อปปี้มาวาง ตรวจสอบได้เฉพาะตอนกดเท่านั้น
+        $("input").keypress(function(event) {
+          return /\d/.test(String.fromCharCode(event.keyCode));
+        });//end กำหนดให้ใส่เฉพาะตัวเลข
+        ///////////////////////////////////////////////ใส่จำนวนตั๋ว แล้วสรุปจำนวนเงินสุทธิ///////////////////////////////////////
+        $('#chair').keyup(function(){
+            var chair = $('#chair').val();
+            if(chair.length == 0){
+              $('#money').prop('disabled',true);
+              $('#price').val("");
+            }else{
+              chair = parseInt(chair);
+              $('#price').val(chair * <?php echo $price ?>);
+              $('#money').prop('disabled',false);
+            }
+        });
+        ///////////////////////////////////////////////ตรวจสอบจำนวนเงินที่ใส่ตู้///////////////////////////////////////
+        $('#money').keyup(function() {
+            var money = $('#money').val();//จำนวนเงินที่ใส่ตู้
+            var price = $('#price').val();//จำนวนเงินสุทธิ
+            if (money.length == 0) {
+                $('#buy').prop('disabled',true);
+                $('#alert').html("กรุณาใส่จำนวนเงินในช่องนี้");
+            }else{
+              money = parseInt(money);//แปลงจาก string -> Int
+              price = parseInt(price);
+              if (money < price) {
+                $('#alert').html("กรุณาใส่จำนวนเงินให้มากกว่า หรือเท่ากับราคาเงินสุทธิ");
+                $('#buy').prop('disabled',true);
+              }else{
+                $('#alert').html("");
+                $('#buy').prop('disabled',false);
+              } 
+            }            
+        });
+        ///////////////////////////////////////////////start คำนวณเงินทอน///////////////////////////////////////
+        $('#buy').click(function(){            
+            var chair = $('#chair').val();
+            var price = $('#price').val();
+            var money = $('#money').val();
+                $.ajax({
+                  type:'GET',
+                  url:'calculate.php',
+                  data:{chair:chair,
+                        price:price,
+                        money:money},
+                  success: function(data){
+                    //alert(data);
+                    $('#data').html(data);
+                    $('#modalbox').modal('show');                  
+                  }
+                });//end AJAX           
+        });//end คำนวณงินทอน 
+        ///////////////////////////////////////////////start finish/////////////////////////////////////// 
+        $('#finish').click(function(){
+            window.location.href = "index.php"; 
+        });     
     });//end jQuery
   </script>
 </body>
