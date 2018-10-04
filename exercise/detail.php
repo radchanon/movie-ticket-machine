@@ -73,11 +73,12 @@ $curl = curl_init();
           </div>
         </div>
         <hr>
+          <!-- Stsrt Ticket Box -->
           <div class="container-fluid" id='ticketBox' style='display:none;'>
             <div class="row form-group">
               <div class="col-md-4">จำนวนที่นั่ง:</div>
               <div class="col-md-8">
-                <input type="text" class="form-control" id="chair" value="" onkeyup="cal();">
+                <input type="text" class="form-control" id="chair" value="" onkeyup="cal();" >
               </div>
             </div>
             <div class="row form-group">
@@ -86,22 +87,39 @@ $curl = curl_init();
             </div>
             <div class="row form-group">
               <div class="col-md-4">จำนวนเงืนที่ใส่:</div>
-              <div class="col-md-8"><input type="text" class="form-control" id="money" value=""></div>
+              <div class="col-md-8"><input type="text" class="form-control" id="money" value="" ></div>
             </div>
             <div class="row form-group">
                 <button type="button" class="btn btn-primary col-md-offset-10 col-md-2" id="buy">ซื้อตั๋ว</button>            
-            </div>            
-            <hr>
+            </div>             
           </div>
+          <!-- End Ticket Box -->          
+          <hr>
           <div class="col-md-0 " alight="center">  
             <button type="button" class="btn btn-info" id="toggle" <?php if($status == false){?> disabled <?php  } ?> >ซื้อตั๋วชมภาพยนต์</button>
             <a href="index.php" class="btn btn-primary" role="button"> กลับสู่หน้าหลัก </a> 
           </div> 
       </div>
   </div>
-  <!-- DIALOG -->
-  <div id="dialog" ></div>
+  <!-- Modal -->
+  <div class="modal fade" tabindex="-1" role="dialog" id="modalbox">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">ภาพยนต์เรื่อง: <?php echo $name ?></h4>
+        </div>
+        <div class="modal-body" >
+          <p></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Modal -->
   <script>
+    //start jQuery
     $(document).ready(function(){
         //ใส่จำนวนตั๋ว แล้วสรุปจำนวนที่ต้องจ่าย
         $('#chair').keyup(function(){
@@ -110,13 +128,14 @@ $curl = curl_init();
         });
         //เปิด-ปิด ช่องซื้อตั๋ว
         $('#toggle').click(function(){
-            $('#ticketBox').toggle(700);
+            $('#ticketBox').toggle(600);
         });
-        //คำนวณเงินถอน
+        //start คำนวณเงินทอน
         $('#buy').click(function(){
+            
             var chair = parseInt($('#chair').val());
             var price = parseInt($('#price').val());
-            var money = parseInt($('#money').val());
+            var money = parseInt($('#money').val());            
             $.ajax({
                 type:'GET',
                 url:'calculate.php',
@@ -124,25 +143,13 @@ $curl = curl_init();
                       price:price,
                       money:money},
                 success: function(data){
-                  alert(data);
-                  $('#dialog').html(data);
-                  //$('#dialog').dialog('open');
+                  //alert(data);
+                  $('p').html(data);
+                  $('#modalbox').modal('show');
                 }
-
-            });
-        });
-        //ไดอร็อค
-        /*$("#dialog").dialog({
-            autoOpen: false,
-            modal: true,
-            title: "Details",
-            buttons: {
-                Close: function () {
-                    $(this).dialog('close');
-                }
-            }
-        });*/
-    });
+            });//end AJAX
+        });//end คำนวณงินทอน        
+    });//end jQuery
   </script>
 </body>
 </html>
