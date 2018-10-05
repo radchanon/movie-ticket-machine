@@ -38,9 +38,13 @@ $curl = curl_init();
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- jQuery Confirm -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 </head>
 <body>
 <div class="container">
+
   <h1 class="my-4">รายละเอียดภาพยนตร์</h1>
   <div class="row well">
     
@@ -75,8 +79,8 @@ $curl = curl_init();
           <div class="container-fluid" id='ticketBox' style='display:none;'>
             <div class="row form-group">
               <div class="col-md-4">จำนวนตั๋ว:</div>
-              <div class="col-md-8">
-                <input type="text" placeholder="กรอกตัวเลข 0-9 เท่านั้น" class="form-control" id="chair" value="" autofocus>
+              <div class="col-md-8 ">
+                <input type="text" placeholder="กรอกตัวเลข 0-9 เท่านั้น" class="form-control" id="chair" value="" autofocus>                
               </div>
             </div>
             <div class="row form-group">
@@ -98,8 +102,8 @@ $curl = curl_init();
           <!-- End Ticket Box -->          
           <!-- Button group --> 
           <div class="col-md-0 " alight="center">  
-            <button type="button" class="btn btn-info" id="toggle" <?php if($status == false){?> disabled <?php  } ?> >ซื้อตั๋วชมภาพยนต์</button>
-            <a href="index.php" class="btn btn-primary" role="button"> กลับสู่หน้าหลัก </a> 
+            <button type="button" class="btn btn-info" id="toggle" <?php if($status == false){?> disabled <?php  } ?> ><span id='arrow' class='glyphicon glyphicon-chevron-down'> ซื้อตั๋วชมภาพยนตร์</span></button>
+            <a href="index.php" class="btn btn-default" role="button"> <span class='glyphicon glyphicon-home'> กลับสู่หน้าหลัก</span></a> 
           </div>
                 
       </div>
@@ -109,14 +113,22 @@ $curl = curl_init();
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">ภาพยนตร์เรื่อง: <?php echo $name ?></h4>
+          <h3 class="modal-title">ภาพยนตร์เรื่อง: <?php echo $name ?></h3>
         </div>
         <div class="modal-body" >
-          <p id="data"></p>
-        </div>
+          <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-6">
+              <img class="img-fluid" src="<?php echo $img; ?>" style="widht:auto;height:300px;">
+            </div>
+            <div class="col-md-6">
+              <p id="data"></p>
+            </div>
+          </div>
+        </div><br>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id='finish'>ตกลง</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+          <button type="button" class="btn btn-success" id='finish'>ตกลง</button>
+          <button type="button" class="btn btn-warning" data-dismiss="modal">แก้ไข</button>
         </div>
       </div>
     </div>
@@ -127,7 +139,12 @@ $curl = curl_init();
     $(document).ready(function(){ 
         ///////////////////////////////////////////////เปิด-ปิด ช่องซื้อตั๋ว///////////////////////////////////////
         $('#toggle').click(function(){
-            $('#ticketBox').toggle(600);
+            $('#ticketBox').toggle(500);
+            if($('#arrow').attr('class')=="glyphicon glyphicon-chevron-down"){
+              $('#arrow').attr('class','glyphicon glyphicon-chevron-up')
+            }else{
+              $('#arrow').attr('class','glyphicon glyphicon-chevron-down')
+            }            
         });
         ///////////////////////////////////////////////กำหนดให้ใส่เฉพาะตัวเลข///////////////////////////////////////
         //ref link: https://stackoverflow.com/questions/995183/how-to-allow-only-numeric-0-9-in-html-inputbox-using-jquery 
@@ -140,11 +157,19 @@ $curl = curl_init();
             var chair = $('#chair').val();
             if(chair.length == 0){
               $('#money').prop('disabled',true);
-              $('#price').val("");
+              $('#price').val('');
+              $('#money').val('');
             }else{
               chair = parseInt(chair);
               $('#price').val(chair * <?php echo $price ?>);
               $('#money').prop('disabled',false);
+              var chair = $('#chair').val();
+              var price = parseInt($('#price').val());
+              var money = parseInt($('#money').val());
+              if (money < price) {
+                $('#alert').html("กรุณาใส่จำนวนเงินให้มากกว่า หรือเท่ากับราคาเงินสุทธิ");
+                $('#buy').prop('disabled',true);
+              }
             }
         });
         ///////////////////////////////////////////////ตรวจสอบจำนวนเงินที่ใส่ตู้///////////////////////////////////////
@@ -186,7 +211,25 @@ $curl = curl_init();
         });//end คำนวณงินทอน 
         ///////////////////////////////////////////////start finish/////////////////////////////////////// 
         $('#finish').click(function(){
-            window.location.href = "index.php"; 
+          $('#modalbox').modal('hide');
+          $.confirm({
+              title: 'เสร็จสิ้นการทำรายการ ',
+              icon: 'glyphicon glyphicon-ok',
+              content: 'ขอบคุณที่ใช้บริการ',
+              animationSpeed: 800,
+              type: 'green',
+              autoClose: 'ตกลง|5000',
+              buttons: {
+                  ตกลง: {
+                    btnClass: 'btn-green',
+                      action:function () {                      
+                        window.location.href = "index.php";
+                      }
+                  }
+                    
+              }
+          });
+            //window.location.href = "index.php"; 
         });     
     });//end jQuery
   </script>

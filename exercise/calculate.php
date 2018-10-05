@@ -7,7 +7,7 @@ if(empty($_GET)){
         $money = intval($_GET['money']);//จำนวนที่จจ่ายจริง
 
         $change = $money - $price;
-        echo ("จำนวนตั๋วที่ซื้อ: ". $chair ." ที่นั่ง<br>ราคาสุทธิ: ".$price." บาท<br>จำนวนเงินที่ใส่ตู้: ".$money." บาท<br>เงินทอนสุทธิ: " . $change." บาท<br>เป็น<br>");
+        echo ("จำนวนตั๋วที่ซื้อ: ". $chair ." ใบ<br>ราคาสุทธิ: ".$price." บาท<br>จำนวนเงินที่ใส่ตู้: ".$money." บาท<br>เงินทอนสุทธิ: " . $change." บาท<br>");
         if($change >= 1000){
             echo ("แบงค์พัน ".floor($change / 1000)." ใบ<br>");
             $change = $change % 1000;
