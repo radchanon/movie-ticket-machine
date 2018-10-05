@@ -90,7 +90,7 @@ $curl = curl_init();
             <div class="row form-group">
               <div class="col-md-4">จำนวนเงินที่ใส่ตู้:</div>
               <div class="col-md-8">
-                <input type="text" placeholder="กรอกตัวเลข 0-9 เท่านั้น" class="form-control" id="money" value="" disabled>
+                <input type="text" placeholder="" class="form-control" id="money" value="" disabled>
                 <p id="alert" style="color:red"></p>
               </div>
             </div>
@@ -157,12 +157,15 @@ $curl = curl_init();
             var chair = $('#chair').val();
             if(chair.length == 0){
               $('#money').prop('disabled',true);
+              $('#money').attr('placeholder','');
               $('#price').val('');
               $('#money').val('');
+              $('#alert').html('');
             }else{
               chair = parseInt(chair);
               $('#price').val(chair * <?php echo $price ?>);
               $('#money').prop('disabled',false);
+              $('#money').attr('placeholder','กรอกตัวเลข 0-9 เท่านั้น');
               var chair = $('#chair').val();
               var price = parseInt($('#price').val());
               var money = parseInt($('#money').val());
@@ -203,7 +206,6 @@ $curl = curl_init();
                         price:price,
                         money:money},
                   success: function(data){
-                    //alert(data);
                     $('#data').html(data);
                     $('#modalbox').modal('show');                  
                   }
@@ -225,12 +227,10 @@ $curl = curl_init();
                       action:function () {                      
                         window.location.href = "index.php";
                       }
-                  }
-                    
+                  }                    
               }
-          });
-            //window.location.href = "index.php"; 
-        });     
+          });//end confirm
+        });//end finish     
     });//end jQuery
   </script>
 </body>
